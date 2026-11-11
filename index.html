@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My MTN MoMo</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    margin: 0;
+    background: #f2f3f5;
+    color: #222;
+}
+
+header {
+    background: #ffcc00;
+    padding: 18px;
+    text-align: center;
+}
+
+header img {
+    width: 65px;
+    height: 65px;
+    object-fit: contain;
+}
+
+header h1 {
+    margin: 8px 0;
+}
+
+.app {
+    max-width: 430px;
+    margin: 20px auto;
+    padding: 15px;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 3px 12px #00000012;
+    margin-bottom: 15px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+input, select {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #ccc;
+    border-radius: 9px;
+    margin: 8px 0 14px;
+    font-size: 16px;
+    background: white;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 9px;
+    background: #ffcc00;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 5px 0;
+}
+
+button:hover {
+    background: #efbd00;
+}
+
+.secondary {
+    background: #eee;
+}
+
+.balance {
+    background: #ffcc00;
+    padding: 22px;
+    border-radius: 15px;
+    margin-bottom: 18px;
+}
+
+.balance h1 {
+    font-size: 30px;
+    margin-bottom: 0;
+    overflow-wrap: anywhere;
+}
+
+.menu {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.menu button {
+    background: white;
+    border: 1px solid #eee;
+    min-height: 85px;
+    box-shadow: 0 2px 6px #0000000c;
+}
+
+.menu button span {
+    display: block;
+    font-size: 25px;
+    margin-bottom: 6px;
+}
+
+.transaction {
+    padding: 14px 0;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.money-in {
+    color: #138a39;
+    font-weight: bold;
+}
+
+.money-out {
+    color: #d62828;
+    font-weight: bold;
+}
+
+.success {
+    background: #e7f8eb;
+    border: 1px solid #9bd6a8;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+footer {
+    text-align: center;
+    color: #777;
+    font-size: 12px;
+    padding: 15px;
+}
+
+/* RESTRICTION NOTICE */
+
+.restriction-card {
+    border: 1px solid #efb1b1;
+    border-top: 6px solid #c62828;
+    background: #fff;
+}
+
+.restriction-logo {
+    display: block;
+    width: 82px;
+    height: 82px;
+    object-fit: contain;
+    margin: 2px auto 18px;
+}
+
+.restriction-label {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 20px;
+    background: #fff0f0;
+    color: #a31515;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: .7px;
+}
+
+.restriction-title {
+    color: #b71c1c;
+    text-align: center;
+    margin: 12px 0;
+}
+
+.restriction-copy {
+    color: #555;
+    line-height: 1.55;
+    text-align: center;
+}
+
+.restriction-reference {
+    margin: 18px 0;
+    padding: 12px;
+    border-radius: 8px;
+    background: #f5f5f5;
+    text-align: center;
+    font-size: 13px;
+}
+
+.restriction-button {
+    background: #b71c1c;
+    color: white;
+}
+
+.restriction-button:hover {
+    background: #941515;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/MTN_2022_logo.svg" alt="MTN logo">
+    <h1>My MTN MoMo</h1>
+    <p>Your money. Your convenience.</p>
+</header>
+
+<div class="app">
+
+<!-- WELCOME -->
+
+<section id="welcome" class="card">
+    <h2>Welcome</h2>
+    <p>Manage your wallet with My MTN MoMo.</p>
+    <button onclick="showPage('register')">Create Account</button>
+    <button class="secondary" onclick="showPage('login')">Login</button>
+</section>
+
+<!-- REGISTER -->
+
+<section id="register" class="card hidden">
+    <h2>Create Account</h2>
+
+    <input id="regName" placeholder="Full name">
+    <input id="regPhone" placeholder="Phone number" type="tel">
+    <input id="regPin" placeholder="Create 4-digit PIN" type="password" maxlength="4" inputmode="numeric">
+    <input id="confirmPin" placeholder="Confirm PIN" type="password" maxlength="4" inputmode="numeric">
+
+    <button onclick="register()">Create Account</button>
+    <button class="secondary" onclick="showPage('welcome')">Back</button>
+</section>
+
+<!-- LOGIN -->
+
+<section id="login" class="card hidden">
+    <h2>Login</h2>
+
+    <input id="loginPhone" placeholder="Phone number" type="tel">
+    <input id="loginPin" placeholder="Enter PIN" type="password" maxlength="4" inputmode="numeric">
+
+    <button onclick="login()">Login</button>
+    <button class="secondary" onclick="showPage('welcome')">Back</button>
+</section>
+
+<!-- DASHBOARD -->
+
+<section id="dashboard" class="hidden">
+
+    <div class="card">
+        <h2 id="greeting">Hello!</h2>
+
+        <div class="balance">
+            <small>WALLET BALANCE</small>
+            <h1 id="balance">GH₵550,000.00</h1>
+        </div>
+
+        <div class="menu">
+            <button onclick="openService('send')"><span>💸</span>Send Money</button>
+            <button onclick="openService('receive')"><span>📥</span>Receive Money</button>
+            <button onclick="openService('airtime')"><span>📱</span>Buy Airtime</button>
+            <button onclick="openService('data')"><span>🌐</span>Buy Data</button>
+            <button onclick="openService('bills')"><span>🧾</span>Pay Bills</button>
+            <button onclick="showHistory()"><span>📜</span>History</button>
+        </div>
+    </div>
+
+    <button onclick="logout()">Logout</button>
+</section>
+
+<!-- SEND MONEY -->
+
+<section id="send" class="card hidden">
+    <h2>💸 Send Money</h2>
+
+    <input id="sendName" placeholder="Recipient name">
+    <input id="sendPhone" placeholder="Recipient phone number" type="tel">
+    <input id="sendAmount" type="number" min="0.01" step="0.01" placeholder="Amount (GH₵)">
+    <input id="sendNote" placeholder="Description (optional)">
+
+    <button onclick="prepareSend()">Continue</button>
+    <button class="secondary" onclick="showPage('dashboard')">Back</button>
+</section>
+
+<!-- RECEIVE MONEY -->
+
+<section id="receive" class="card hidden">
+    <h2>📥 Receive Money</h2>
+
+    <p>Record an incoming payment in your wallet.</p>
+
+    <input id="receiveName" placeholder="Sender name">
+    <input id="receivePhone" placeholder="Sender phone number" type="tel">
+    <input id="receiveAmount" type="number" min="0.01" step="0.01" placeholder="Amount (GH₵)">
+
+    <button onclick="prepareReceive()">Continue</button>
+    <button class="secondary" onclick="showPage('dashboard')">Back</button>
+</section>
+
+<!-- AIRTIME -->
+
+<section id="airtime" class="card hidden">
+    <h2>📱 Buy Airtime</h2>
+
+    <label>Network</label>
+    <select id="airtimeNetwork">
+        <option value="MTN">MTN</option>
+        <option value="Telecel">Telecel</option>
+        <option value="AT">AT</option>
+    </select>
+
+    <input id="airtimePhone" placeholder="Phone number" type="tel">
+    <input id="airtimeAmount" type="number" min="0.01" step="0.01" placeholder="Amount (GH₵)">
+
+    <button onclick="prepareAirtime()">Continue</button>
+    <button class="secondary" onclick="showPage('dashboard')">Back</button>
+</section>
+
+<!-- DATA -->
+
+<section id="data" class="card hidden">
+    <h2>🌐 Buy Data</h2>
+
+    <label>Network</label>
+    <select id="dataNetwork">
+        <option value="MTN">MTN</option>
+        <option value="Telecel">Telecel</option>
+        <option value="AT">AT</option>
+    </select>
+
+    <label>Data bundle</label>
+    <select id="dataBundle">
+        <option value="1GB">1 GB</option>
+        <option value="2GB">2 GB</option>
+        <option value="5GB">5 GB</option>
+        <option value="10GB">10 GB</option>
+        <option value="20GB">20 GB</option>
+    </select>
+
+    <input id="dataPhone" placeholder="Phone number" type="tel">
+    <input id="dataAmount" type="number" min="0.01" step="0.01" placeholder="Bundle price (GH₵)">
+
+    <button onclick="prepareData()">Continue</button>
+    <button class="secondary" onclick="showPage('dashboard')">Back</button>
+</section>
+
+<!-- BILLS -->
+
+<section id="bills" class="card hidden">
+    <h2>🧾 Pay Bills</h2>
+
+    <label>Select bill</label>
+    <select id="billType">
+        <option value="Electricity">Electricity</option>
+        <option value="Water">Water</option>
+        <option value="TV Subscription">TV Subscription</option>
+        <option value="School Fees">School Fees</option>
+        <option value="Internet">Internet</option>
+    </select>
+
+    <input id="billReference" placeholder="Account / Reference number">
+    <input id="billAmount" type="number" min="0.01" step="0.01" placeholder="Amount (GH₵)">
+
+    <button onclick="prepareBill()">Continue</button>
+    <button class="secondary" onclick="showPage('dashboard')">Back</button>
+</section>
+
+<!-- CONFIRMATION -->
+
+<section id="confirm" class="card hidden">
+    <h2>Confirm Transaction</h2>
+
+    <div id="confirmationDetails"></div>
+
+    <p>Enter your 4-digit PIN to confirm.</p>
+
+    <input id="confirmTransactionPin" type="password" maxlength="4" inputmode="numeric" placeholder="Enter PIN">
+
+    <button onclick="completeTransaction()">Confirm</button>
+    <button class="secondary" onclick="showPage(pending && pending.returnPage ? pending.returnPage : 'dashboard')">Cancel</button>
+</section>
+
+<!-- RECEIPT -->
+
+<section id="receipt" class="card hidden">
+    <div class="success">
+        <h2>✓ Transaction Successful!</h2>
+        <p>Your transaction has been recorded.</p>
+    </div>
+
+    <div id="receiptDetails"></div>
+
+    <button onclick="showPage('dashboard')">Dashboard</button>
+    <button class="secondary" onclick="showHistory()">Transaction History</button>
+</section>
+
+<!-- ACCOUNT RESTRICTION NOTICE -->
+
+<section id="restrictionNotice" class="card restriction-card hidden">
+
+    <img class="restriction-logo"
+         src="https://upload.wikimedia.org/wikipedia/commons/2/2a/MTN_2022_logo.svg"
+         alt="MTN logo">
+
+    <div style="text-align:center;">
+        <span class="restriction-label">ACCOUNT ACTIVITY NOTICE</span>
+    </div>
+
+    <h2 class="restriction-title">TRANSACTION FAILED</h2>
+
+    <h3 style="text-align:center;">ACCESS RESTRICTED</h3>
+
+    <p class="restriction-copy">
+        Too many transactions have been made on this account.
+        Further transactions are temporarily unavailable.
+    </p>
+
+    <p class="restriction-copy">
+        Please visit the customer service office for assistance.
+    </p>
+
+    <div class="restriction-reference">
+        <strong>REFERENCE NUMBER</strong><br>
+        <span id="restrictionReference">—</span>
+    </div>
+
+    <button class="restriction-button" onclick="showPage('dashboard')">
+        Return to Dashboard
+    </button>
+
+</section>
+
+<!-- HISTORY -->
+
+<section id="history" class="card hidden">
+    <h2>📜 Transaction History</h2>
+
+    <div id="historyList"></div>
+
+    <button class="secondary" onclick="showPage('dashboard')">
+        Back to Dashboard
+    </button>
+</section>
+
+<footer>
+    Independent application. All balances and transactions are fictional.
+    Not affiliated with MTN or connected to real mobile money services.
+    <br><br>
+    My MTN MoMo © 2026
+</footer>
+
+</div>
+
+<script>
+
+const STARTING_BALANCE = 550000;
+const MAX_TRANSACTIONS = 5;
+
+let currentAccount = null;
+let pending = null;
+
+// PAGE NAVIGATION
+
+function showPage(page) {
+    document.querySelectorAll(".app > section").forEach(section => {
+        section.classList.add("hidden");
+    });
+
+    document.getElementById(page).classList.remove("hidden");
+}
+
+// OPEN SERVICES
+
+function openService(page) {
+    const transactionPages = ["send", "receive", "airtime", "data", "bills"];
+
+    if (transactionPages.includes(page) && isTransactionLimitReached()) {
+        showRestrictionNotice();
+        return;
+    }
+
+    showPage(page);
+}
+
+// ACCOUNT STORAGE
+
+function getAccount() {
+    return JSON.parse(localStorage.getItem("myMomoAccount") || "null");
+}
+
+function saveAccount() {
+    localStorage.setItem("myMomoAccount", JSON.stringify(currentAccount));
+}
+
+// TRANSACTION LIMIT
+
+function isTransactionLimitReached() {
+    return !!currentAccount &&
+        (currentAccount.transactions || []).length >= MAX_TRANSACTIONS;
+}
+
+function showRestrictionNotice() {
+    if (!currentAccount) return;
+
+    if (!currentAccount.restrictionReference) {
+        currentAccount.restrictionReference =
+            "ACCT-" + Date.now().toString().slice(-8);
+
+        saveAccount();
+    }
+
+    document.getElementById("restrictionReference").textContent =
+        currentAccount.restrictionReference;
+
+    showPage("restrictionNotice");
+}
+
+// PIN SECURITY
+
+async function hashPin(pin) {
+    const data = new TextEncoder().encode(pin);
+    const hash = await crypto.subtle.digest("SHA-256", data);
+
+    return Array.from(new Uint8Array(hash))
+        .map(b => b.toString(16).padStart(2, "0"))
+        .join("");
+}
+
+// REGISTER
+
+async function register() {
+    const name = document.getElementById("regName").value.trim();
+    const phone = document.getElementById("regPhone").value.trim();
+    const pin = document.getElementById("regPin").value;
+    const confirm = document.getElementById("confirmPin").value;
+
+    if (!name || !phone || !pin || !confirm) {
+        alert("Complete all fields.");
+        return;
+    }
+
+    if (!/^\d{4}$/.test(pin)) {
+        alert("PIN must contain exactly 4 numbers.");
+        return;
+    }
+
+    if (pin !== confirm) {
+        alert("PINs do not match.");
+        return;
+    }
+
+    if (getAccount()?.phone === phone) {
+        alert("This account already exists. Please log in.");
+        return;
+    }
+
+    const account = {
+        name,
+        phone,
+        pinHash: await hashPin(pin),
+        balance: STARTING_BALANCE,
+        transactions: []
+    };
+
+    localStorage.setItem("myMomoAccount", JSON.stringify(account));
+
+    document.getElementById("regPin").value = "";
+    document.getElementById("confirmPin").value = "";
+
+    alert("Account created successfully!");
+
+    showPage("login");
+}
+
+// LOGIN
+
+async function login() {
+    const phone = document.getElementById("loginPhone").value.trim();
+    const pin = document.getElementById("loginPin").value;
+
+    const account = getAccount();
+
+    if (!account) {
+        alert("Please create an account first.");
+        showPage("register");
+        return;
+    }
+
+    if (phone !== account.phone || await hashPin(pin) !== account.pinHash) {
+        alert("Incorrect phone number or PIN.");
+        return;
+    }
+
+    currentAccount = account;
+    currentAccount.transactions = currentAccount.transactions || [];
+
+    document.getElementById("loginPin").value = "";
+
+    updateDashboard();
+    showPage("dashboard");
+}
+
+// DASHBOARD
+
+function updateDashboard() {
+    document.getElementById("greeting").textContent =
+        "Hello, " + currentAccount.name + "!";
+
+    document.getElementById("balance").textContent =
+        money(currentAccount.balance);
+}
+
+// MONEY FORMAT
+
+function money(amount) {
+    return "GH₵" + Number(amount).toLocaleString("en-GH", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+}
+
+// HTML PROTECTION
+
+function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+    })[char]);
+}
+
+// PREPARE TRANSACTION
+
+function prepareTransaction(type, amount, details, returnPage) {
+
+    if (isTransactionLimitReached()) {
+        showRestrictionNotice();
+        return;
+    }
+
+    if (!Number.isFinite(amount) || amount <= 0) {
+        alert("Enter a valid amount.");
+        return;
+    }
+
+    if (type !== "Received" && amount > currentAccount.balance) {
+        alert("Insufficient wallet balance.");
+        return;
+    }
+
+    pending = {
+        type,
+        amount,
+        details,
+        returnPage
+    };
+
+    document.getElementById("confirmationDetails").innerHTML =
+        "<p><strong>Transaction:</strong> " + escapeHTML(type) + "</p>" +
+
+        details.map(item =>
+            "<p><strong>" + escapeHTML(item.label) + ":</strong> " +
+            escapeHTML(item.value) + "</p>"
+        ).join("") +
+
+        "<p><strong>Amount:</strong> " + money(amount) + "</p>";
+
+    document.getElementById("confirmTransactionPin").value = "";
+
+    showPage("confirm");
+}
+
+// SEND MONEY
+
+function prepareSend() {
+    const name = document.getElementById("sendName").value.trim();
+    const phone = document.getElementById("sendPhone").value.trim();
+    const amount = Number(document.getElementById("sendAmount").value);
+    const note = document.getElementById("sendNote").value.trim();
+
+    if (!name || !phone) {
+        alert("Enter recipient name and phone number.");
+        return;
+    }
+
+    prepareTransaction("Sent", amount, [
+        {label: "Recipient", value: name},
+        {label: "Phone", value: phone},
+        {label: "Description", value: note || "None"}
+    ], "send");
+}
+
+// RECEIVE MONEY
+
+function prepareReceive() {
+    const name = document.getElementById("receiveName").value.trim();
+    const phone = document.getElementById("receivePhone").value.trim();
+    const amount = Number(document.getElementById("receiveAmount").value);
+
+    if (!name || !phone) {
+        alert("Enter sender name and phone number.");
+        return;
+    }
+
+    prepareTransaction("Received", amount, [
+        {label: "Sender", value: name},
+        {label: "Phone", value: phone}
+    ], "receive");
+}
+
+// AIRTIME
+
+function prepareAirtime() {
+    const network = document.getElementById("airtimeNetwork").value;
+    const phone = document.getElementById("airtimePhone").value.trim();
+    const amount = Number(document.getElementById("airtimeAmount").value);
+
+    if (!phone) {
+        alert("Enter a phone number.");
+        return;
+    }
+
+    prepareTransaction("Airtime", amount, [
+        {label: "Network", value: network},
+        {label: "Phone", value: phone}
+    ], "airtime");
+}
+
+// DATA
+
+function prepareData() {
+    const network = document.getElementById("dataNetwork").value;
+    const bundle = document.getElementById("dataBundle").value;
+    const phone = document.getElementById("dataPhone").value.trim();
+    const amount = Number(document.getElementById("dataAmount").value);
+
+    if (!phone) {
+        alert("Enter a phone number.");
+        return;
+    }
+
+    prepareTransaction("Data", amount, [
+        {label: "Network", value: network},
+        {label: "Bundle", value: bundle},
+        {label: "Phone", value: phone}
+    ], "data");
+}
+
+// BILL PAYMENT
+
+function prepareBill() {
+    const type = document.getElementById("billType").value;
+    const reference = document.getElementById("billReference").value.trim();
+    const amount = Number(document.getElementById("billAmount").value);
+
+    if (!reference) {
+        alert("Enter your account or reference number.");
+        return;
+    }
+
+    prepareTransaction("Bill Payment", amount, [
+        {label: "Bill type", value: type},
+        {label: "Reference", value: reference}
+    ], "bills");
+}
+
+// COMPLETE TRANSACTION
+
+async function completeTransaction() {
+    if (!pending || !currentAccount) return;
+
+    if (isTransactionLimitReached()) {
+        pending = null;
+        showRestrictionNotice();
+        return;
+    }
+
+    const pin = document.getElementById("confirmTransactionPin").value;
+
+    if (!/^\d{4}$/.test(pin)) {
+        alert("Enter your 4-digit PIN.");
+        return;
+    }
+
+    if (await hashPin(pin) !== currentAccount.pinHash) {
+        alert("Incorrect PIN.");
+        return;
+    }
+
+    if (pending.type !== "Received" &&
+        pending.amount > currentAccount.balance) {
+
+        alert("Insufficient wallet balance.");
+        showPage("dashboard");
+        return;
+    }
+
+    if (pending.type === "Received") {
+        currentAccount.balance += pending.amount;
+    } else {
+        currentAccount.balance -= pending.amount;
+    }
+
+    const transaction = {
+        id: Date.now(),
+        type: pending.type,
+        amount: pending.amount,
+        details: pending.details,
+        date: new Date().toLocaleString()
+    };
+
+    currentAccount.transactions.unshift(transaction);
+
+    saveAccount();
+
+    document.getElementById("receiptDetails").innerHTML =
+        "<p><strong>Reference:</strong> " + transaction.id + "</p>" +
+
+        transaction.details.map(item =>
+            "<p><strong>" + escapeHTML(item.label) + ":</strong> " +
+            escapeHTML(item.value) + "</p>"
+        ).join("") +
+
+        "<p><strong>Amount:</strong> " + money(transaction.amount) + "</p>" +
+        "<p><strong>Date:</strong> " + escapeHTML(transaction.date) + "</p>" +
+        "<p><strong>New balance:</strong> " + money(currentAccount.balance) + "</p>";
+
+    clearForms();
+
+    pending = null;
+
+    updateDashboard();
+    showPage("receipt");
+}
+
+// CLEAR FORMS
+
+function clearForms() {
+    [
+        "sendName", "sendPhone", "sendAmount", "sendNote",
+        "receiveName", "receivePhone", "receiveAmount",
+        "airtimePhone", "airtimeAmount",
+        "dataPhone", "dataAmount",
+        "billReference", "billAmount",
+        "confirmTransactionPin"
+    ].forEach(id => {
+        document.getElementById(id).value = "";
+    });
+}
+
+// TRANSACTION HISTORY
+
+function showHistory() {
+    const list = document.getElementById("historyList");
+    const transactions = currentAccount.transactions || [];
+
+    if (transactions.length === 0) {
+        list.innerHTML = "<p>No transactions yet.</p>";
+    } else {
+
+        list.innerHTML = transactions.map(transaction => {
+
+            const incoming = transaction.type === "Received";
+
+            return `
+                <div class="transaction">
+                    <div>
+                        <strong>${escapeHTML(transaction.type)}</strong><br>
+                        <small>${escapeHTML(transaction.date)}</small><br>
+                        <small>Ref: ${transaction.id}</small>
+                    </div>
+
+                    <div class="${incoming ? "money-in" : "money-out"}">
+                        ${incoming ? "+" : "-"}${money(transaction.amount)}
+                    </div>
+                </div>
+            `;
+
+        }).join("");
+    }
+
+    showPage("history");
+}
+
+// LOGOUT
+
+function logout() {
+    currentAccount = null;
+    pending = null;
+
+    document.getElementById("loginPhone").value = "";
+    document.getElementById("loginPin").value = "";
+
+    showPage("welcome");
+}
+
+</script>
+
+</body>
+</html>
